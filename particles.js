@@ -1,8 +1,8 @@
 /**
- * MF Pro — Abstract Financial Mathematics Background
- * Efficient frontier curve + coordinate grid
- * Academic, quantitative, institutional feel
- * No particles. No starfield. No crypto.
+ * MF Portfolio Pro — Portfolio Performance Curve
+ * Clean, upward-sloping cumulative return line
+ * Draw-once animation on page load, then static
+ * Institutional, research-grade aesthetic
  */
 (() => {
   'use strict';
@@ -12,14 +12,9 @@
   const ctx = canvas.getContext('2d');
 
   let W, H;
-  let time = 0;
-  let animId;
-  let lastFrame = 0;
-  const FPS = 20;
-  const FRAME_MS = 1000 / FPS;
 
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const hero = canvas.parentElement;
     W = hero.offsetWidth;
     H = hero.offsetHeight;
@@ -30,203 +25,212 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  /* --- Coordinate Grid --- */
-  function drawGrid() {
-    const gridSpacing = 60;
-    const gridColor = 'rgba(255, 255, 255, 0.018)';
+  /* --- Generate portfolio performance curve points --- */
+  function generateCurvePoints() {
+    const points = [];
+    const steps = 200;
 
-    ctx.strokeStyle = gridColor;
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
+    // Margins: curve occupies the right ~75% and middle ~60% vertically
+    const marginLeft = W * 0.10;
+    const marginRight = W * 0.06;
+    const marginTop = H * 0.22;
+    const marginBottom = H * 0.18;
 
-    // Vertical lines
-    for (let x = 0; x < W; x += gridSpacing) {
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, H);
+    const curveW = W - marginLeft - marginRight;
+    const curveH = H - marginTop - marginBottom;
+
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+
+      // Base: gentle upward slope with log-like growth
+      let y = 0.15 + 0.65 * Math.pow(t, 0.7);
+
+      // Add realistic market dips and recoveries
+      y -= 0.04 * Math.sin(t * Math.PI * 3.2);
+      y -= 0.025 * Math.sin(t * Math.PI * 7.1 + 0.5);
+      y += 0.015 * Math.sin(t * Math.PI * 12.3 + 1.2);
+
+      // Small drawdown around 35% of the timeline
+      if (t > 0.30 && t < 0.42) {
+        y -= 0.035 * Math.sin((t - 0.30) / 0.12 * Math.PI);
+      }
+
+      // Another small dip around 65%
+      if (t > 0.60 && t < 0.70) {
+        y -= 0.02 * Math.sin((t - 0.60) / 0.10 * Math.PI);
+      }
+
+      const px = marginLeft + t * curveW;
+      const py = marginTop + curveH * (1 - y);
+      points.push({ x: px, y: py });
     }
-    // Horizontal lines
-    for (let y = 0; y < H; y += gridSpacing) {
-      ctx.moveTo(0, y);
-      ctx.lineTo(W, y);
-    }
-    ctx.stroke();
+
+    return points;
   }
 
-  /* --- Axis labels (subtle) --- */
-  function drawAxes() {
-    // X-axis label area (bottom region)
-    const axisColor = 'rgba(255, 255, 255, 0.04)';
-    const labelColor = 'rgba(255, 255, 255, 0.06)';
+  /* --- Draw the curve (static, after animation completes) --- */
+  function drawCurveStatic(points) {
+    ctx.clearRect(0, 0, W, H);
 
-    // Horizontal axis line
-    ctx.strokeStyle = axisColor;
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    ctx.moveTo(W * 0.08, H * 0.85);
-    ctx.lineTo(W * 0.92, H * 0.85);
-    ctx.stroke();
-
-    // Vertical axis line
-    ctx.beginPath();
-    ctx.moveTo(W * 0.08, H * 0.15);
-    ctx.lineTo(W * 0.08, H * 0.85);
-    ctx.stroke();
-
-    // Axis labels
-    ctx.font = '500 9px Inter, sans-serif';
-    ctx.fillStyle = labelColor;
-    ctx.textAlign = 'center';
-    ctx.fillText('σ (Risk)', W * 0.5, H * 0.89);
-
+    // Soft diffused glow (wider, lower opacity)
     ctx.save();
-    ctx.translate(W * 0.04, H * 0.5);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText('E(R)', 0, 0);
+    ctx.strokeStyle = 'rgba(100, 160, 200, 0.06)';
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'miter';
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
     ctx.restore();
 
-    // Small tick marks
-    ctx.strokeStyle = axisColor;
-    ctx.lineWidth = 0.5;
-    for (let i = 1; i <= 6; i++) {
-      const tx = W * 0.08 + (W * 0.84) * (i / 7);
-      ctx.beginPath();
-      ctx.moveTo(tx, H * 0.85 - 3);
-      ctx.lineTo(tx, H * 0.85 + 3);
-      ctx.stroke();
-    }
-    for (let i = 1; i <= 5; i++) {
-      const ty = H * 0.85 - (H * 0.70) * (i / 6);
-      ctx.beginPath();
-      ctx.moveTo(W * 0.08 - 3, ty);
-      ctx.lineTo(W * 0.08 + 3, ty);
-      ctx.stroke();
-    }
-  }
-
-  /* --- Efficient Frontier Curve --- */
-  function drawFrontier() {
-    const drift = Math.sin(time * 0.3) * 4;
-
-    // The curve: a parabolic-like frontier (risk on x, return on y)
-    // Maps from chart space to canvas space
-    const ox = W * 0.08;
-    const oy = H * 0.85;
-    const cw = W * 0.84;
-    const ch = H * 0.70;
-
-    // Generate frontier points (parametric)
-    const points = [];
-    for (let t = 0; t <= 1; t += 0.01) {
-      // Classic efficient frontier shape: sqrt-like curve
-      const risk = 0.05 + t * 0.85;
-      const ret = 0.15 + Math.sqrt(t) * 0.75 - t * 0.15;
-      const x = ox + risk * cw;
-      const y = oy - ret * ch + drift * (0.5 - Math.abs(t - 0.5));
-      points.push({ x, y });
-    }
-
-    // Main frontier curve
-    ctx.strokeStyle = 'rgba(122, 155, 181, 0.045)';
-    ctx.lineWidth = 1.8;
+    // Main sharp line
+    ctx.save();
+    ctx.strokeStyle = 'rgba(100, 160, 200, 0.18)';
+    ctx.lineWidth = 1.5;
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'miter';
     ctx.beginPath();
     ctx.moveTo(points[0].x, points[0].y);
     for (let i = 1; i < points.length; i++) {
       ctx.lineTo(points[i].x, points[i].y);
     }
     ctx.stroke();
+    ctx.restore();
+  }
 
-    // Subtle glow line (wider, lower opacity)
-    ctx.strokeStyle = 'rgba(122, 155, 181, 0.02)';
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
+  /* --- Animate the curve drawing once --- */
+  function animateCurveDraw(points) {
+    // Calculate total path length
+    let totalLength = 0;
     for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y);
+      const dx = points[i].x - points[i - 1].x;
+      const dy = points[i].y - points[i - 1].y;
+      totalLength += Math.sqrt(dx * dx + dy * dy);
     }
-    ctx.stroke();
 
-    // Tangent line from origin to optimal portfolio (Capital Market Line)
-    const optIdx = Math.floor(points.length * 0.35);
-    const opt = points[optIdx];
-    ctx.strokeStyle = 'rgba(122, 155, 181, 0.025)';
-    ctx.lineWidth = 0.8;
-    ctx.setLineDash([4, 6]);
-    ctx.beginPath();
-    ctx.moveTo(ox, oy - ch * 0.08);
-    ctx.lineTo(opt.x + cw * 0.3, opt.y - ch * 0.15);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    const duration = 1800; // 1.8s
+    const startTime = performance.now();
 
-    // Small dot at the tangency portfolio
-    ctx.beginPath();
-    ctx.arc(opt.x, opt.y, 3, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(122, 155, 181, 0.08)';
-    ctx.fill();
+    function frame(now) {
+      const elapsed = now - startTime;
+      const rawProgress = Math.min(elapsed / duration, 1);
 
-    // Tiny label near tangency point
-    ctx.font = '500 7px Inter, sans-serif';
-    ctx.fillStyle = 'rgba(122, 155, 181, 0.07)';
-    ctx.textAlign = 'left';
-    ctx.fillText('Optimal', opt.x + 8, opt.y - 4);
+      // Ease-out: 1 - (1 - t)^3
+      const progress = 1 - Math.pow(1 - rawProgress, 3);
 
-    // A few scattered portfolio dots along the frontier
-    const dotPositions = [0.12, 0.25, 0.48, 0.62, 0.78, 0.90];
-    for (const dp of dotPositions) {
-      const idx = Math.floor(dp * (points.length - 1));
-      const pt = points[idx];
+      const drawLength = progress * totalLength;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Determine how many points to draw
+      let accumulated = 0;
+      let endIdx = 0;
+      let partialFrac = 0;
+
+      for (let i = 1; i < points.length; i++) {
+        const dx = points[i].x - points[i - 1].x;
+        const dy = points[i].y - points[i - 1].y;
+        const segLen = Math.sqrt(dx * dx + dy * dy);
+
+        if (accumulated + segLen >= drawLength) {
+          endIdx = i;
+          partialFrac = (drawLength - accumulated) / segLen;
+          break;
+        }
+        accumulated += segLen;
+        endIdx = i;
+        partialFrac = 1;
+      }
+
+      // Build the partial path
+      const partialPoints = [];
+      for (let i = 0; i <= endIdx - 1; i++) {
+        partialPoints.push(points[i]);
+      }
+      // Add the interpolated final point
+      if (endIdx > 0) {
+        const prev = points[endIdx - 1];
+        const curr = points[endIdx];
+        partialPoints.push({
+          x: prev.x + (curr.x - prev.x) * partialFrac,
+          y: prev.y + (curr.y - prev.y) * partialFrac
+        });
+      }
+
+      if (partialPoints.length < 2) {
+        if (rawProgress < 1) requestAnimationFrame(frame);
+        return;
+      }
+
+      // Draw glow
+      ctx.save();
+      ctx.strokeStyle = 'rgba(100, 160, 200, 0.06)';
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'butt';
+      ctx.lineJoin = 'miter';
       ctx.beginPath();
-      ctx.arc(pt.x, pt.y, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.fill();
-    }
+      ctx.moveTo(partialPoints[0].x, partialPoints[0].y);
+      for (let i = 1; i < partialPoints.length; i++) {
+        ctx.lineTo(partialPoints[i].x, partialPoints[i].y);
+      }
+      ctx.stroke();
+      ctx.restore();
 
-    // A few random sub-optimal portfolios below the frontier
-    const subOpt = [
-      { rx: 0.30, ry: 0.25 },
-      { rx: 0.45, ry: 0.35 },
-      { rx: 0.55, ry: 0.30 },
-      { rx: 0.65, ry: 0.45 },
-      { rx: 0.35, ry: 0.40 },
-      { rx: 0.50, ry: 0.50 },
-      { rx: 0.70, ry: 0.38 },
-      { rx: 0.25, ry: 0.18 },
-    ];
-    for (const s of subOpt) {
-      const sx = ox + s.rx * cw;
-      const sy = oy - s.ry * ch;
+      // Draw main line
+      ctx.save();
+      ctx.strokeStyle = 'rgba(100, 160, 200, 0.18)';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'butt';
+      ctx.lineJoin = 'miter';
       ctx.beginPath();
-      ctx.arc(sx, sy, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.025)';
-      ctx.fill();
+      ctx.moveTo(partialPoints[0].x, partialPoints[0].y);
+      for (let i = 1; i < partialPoints.length; i++) {
+        ctx.lineTo(partialPoints[i].x, partialPoints[i].y);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      if (rawProgress < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        // Animation complete — draw the final static frame
+        drawCurveStatic(points);
+      }
     }
+
+    requestAnimationFrame(frame);
   }
 
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    drawGrid();
-    drawAxes();
-    drawFrontier();
+  /* --- Initialize --- */
+  function init() {
+    resize();
+    const points = generateCurvePoints();
+    animateCurveDraw(points);
   }
 
-  function loop(ts) {
-    animId = requestAnimationFrame(loop);
-    if (ts - lastFrame < FRAME_MS) return;
-    lastFrame = ts;
-    time += 0.016;
-    draw();
-  }
-
+  // Handle resize — redraw static curve
   let resizeTimer;
+  let curvePoints = null;
+  let animationDone = false;
+
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { resize(); draw(); }, 250);
+    resizeTimer = setTimeout(() => {
+      resize();
+      curvePoints = generateCurvePoints();
+      drawCurveStatic(curvePoints);
+      animationDone = true;
+    }, 250);
   });
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(animId);
-    else { lastFrame = performance.now(); animId = requestAnimationFrame(loop); }
-  });
-
+  // Pause/resume not needed — animation is one-shot
   resize();
-  animId = requestAnimationFrame(loop);
+  curvePoints = generateCurvePoints();
+  animateCurveDraw(curvePoints);
+
+  // Mark animation as done after duration
+  setTimeout(() => { animationDone = true; }, 2000);
 })();
