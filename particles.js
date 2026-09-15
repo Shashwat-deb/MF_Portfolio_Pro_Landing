@@ -1,6 +1,6 @@
 /**
- * MF Portfolio Pro — Periodic Performance Curve
- * Draw → hold → fade out → redraw, forever.
+ * MF Portfolio Pro — Light Ambient Background Curve
+ * Subtle, faint financial performance curve for Bancuip light aesthetic.
  * Cycle: 1.7s draw · 14s hold · 2s fade → repeat
  */
 (() => {
@@ -13,14 +13,15 @@
     let W, H;
 
     /* ─── Timing ──────────────────────────────────── */
-    const DRAW_MS   = 1700;   // draw animation duration
-    const HOLD_MS   = 14000;  // stay visible before fading
+    const DRAW_MS   = 1800;   // draw animation duration
+    const HOLD_MS   = 12000;  // stay visible before fading
     const FADE_MS   = 2000;   // fade-out duration
 
     /* ─── Resize ──────────────────────────────────── */
     function resize() {
         const dpr  = Math.min(window.devicePixelRatio || 1, 2);
         const hero = canvas.parentElement;
+        if (!hero) return;
         W = hero.offsetWidth;
         H = hero.offsetHeight;
         canvas.width  = W * dpr;
@@ -35,10 +36,10 @@
         const points = [];
         const steps  = 200;
 
-        const marginLeft   = W * 0.10;
+        const marginLeft   = W * 0.08;
         const marginRight  = W * 0.06;
-        const marginTop    = H * 0.22;
-        const marginBottom = H * 0.18;
+        const marginTop    = H * 0.20;
+        const marginBottom = H * 0.22;
 
         const curveW = W - marginLeft - marginRight;
         const curveH = H - marginTop  - marginBottom;
@@ -46,13 +47,13 @@
         for (let i = 0; i <= steps; i++) {
             const t = i / steps;
 
-            let y = 0.15 + 0.65 * Math.pow(t, 0.7);
-            y -= 0.04  * Math.sin(t * Math.PI * 3.2);
-            y -= 0.025 * Math.sin(t * Math.PI * 7.1 + 0.5);
-            y += 0.015 * Math.sin(t * Math.PI * 12.3 + 1.2);
+            let y = 0.15 + 0.68 * Math.pow(t, 0.72);
+            y -= 0.035 * Math.sin(t * Math.PI * 3.2);
+            y -= 0.02  * Math.sin(t * Math.PI * 7.1 + 0.5);
+            y += 0.012 * Math.sin(t * Math.PI * 12.3 + 1.2);
 
-            if (t > 0.30 && t < 0.42) y -= 0.035 * Math.sin((t - 0.30) / 0.12 * Math.PI);
-            if (t > 0.60 && t < 0.70) y -= 0.02  * Math.sin((t - 0.60) / 0.10 * Math.PI);
+            if (t > 0.30 && t < 0.42) y -= 0.03 * Math.sin((t - 0.30) / 0.12 * Math.PI);
+            if (t > 0.60 && t < 0.70) y -= 0.018 * Math.sin((t - 0.60) / 0.10 * Math.PI);
 
             points.push({
                 x: marginLeft + t * curveW,
@@ -62,29 +63,31 @@
         return points;
     }
 
-    /* ─── Draw helpers (alpha-aware) ─────────────── */
+    /* ─── Draw helpers (subtle, soft on light background) ─────────────── */
     function drawSegments(pts, alpha) {
         if (pts.length < 2) return;
         ctx.clearRect(0, 0, W, H);
 
-        // glow pass
+        // Ambient subtle glow pass
         ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = 'rgba(126, 203, 166, 0.06)';
-        ctx.lineWidth   = 14;
-        ctx.lineCap = 'butt'; ctx.lineJoin = 'miter';
+        ctx.globalAlpha = alpha * 0.05;
+        ctx.strokeStyle = '#262CC5';
+        ctx.lineWidth   = 24;
+        ctx.lineCap = 'round'; 
+        ctx.lineJoin = 'round';
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
         ctx.stroke();
         ctx.restore();
 
-        // sharp line pass
+        // Crisp lavender/purple curve line
         ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = 'rgba(126, 203, 166, 0.22)';
+        ctx.globalAlpha = alpha * 0.22;
+        ctx.strokeStyle = '#8778C6';
         ctx.lineWidth   = 1.5;
-        ctx.lineCap = 'butt'; ctx.lineJoin = 'miter';
+        ctx.lineCap = 'round'; 
+        ctx.lineJoin = 'round';
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
@@ -136,7 +139,7 @@
         const start = performance.now();
         function frame(now) {
             const raw  = Math.min((now - start) / DRAW_MS, 1);
-            const ease = 1 - Math.pow(1 - raw, 3);          // ease-out cubic
+            const ease = 1 - Math.pow(1 - raw, 3);
             drawSegments(getPartialPoints(points, ease), 1);
             if (raw < 1) requestAnimationFrame(frame);
             else onComplete();
@@ -155,7 +158,7 @@
         const start = performance.now();
         function frame(now) {
             const raw  = Math.min((now - start) / FADE_MS, 1);
-            const ease = 1 - Math.pow(raw, 2);               // ease-in quad (quick at end)
+            const ease = 1 - Math.pow(raw, 2);
             drawSegments(points, ease);
             if (raw < 1) requestAnimationFrame(frame);
             else {
@@ -171,7 +174,7 @@
         phaseDraw(points, () =>
             phaseHold(points, () =>
                 phaseFade(points, () =>
-                    runCycle(points)   // restart
+                    runCycle(points)
                 )
             )
         );
@@ -186,7 +189,6 @@
         resizeTimer = setTimeout(() => {
             resize();
             curvePoints = generateCurvePoints();
-            // restart cycle on resize
             runCycle(curvePoints);
         }, 250);
     });

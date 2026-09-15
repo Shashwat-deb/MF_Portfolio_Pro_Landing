@@ -4,240 +4,374 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MF Portfolio Pro — Quant Research Platform</title>
+  <title>MF Portfolio Pro — Machine Learning Portfolio Optimization</title>
   <meta name="description"
-    content="A Machine Learning-Driven Quant Infrastructure for Risk-Adjusted Portfolio Optimization. Integrates MPT, LSTM forecasting, and Monte Carlo simulation." />
+    content="Machine learning-driven portfolio optimization, risk analytics, and probabilistic goal planning — institutional-grade tools for every investor." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- Custom cursor -->
-  <div id="cursor-glow" aria-hidden="true"></div>
-  <div id="cursor-ring" aria-hidden="true"></div>
-  <div id="cursor-dot" aria-hidden="true"></div>
-
   <!-- ==============================
-       NAV
+       NAVIGATION (Bancuip Style)
        ============================== -->
   <nav class="nav" id="nav" aria-label="Primary navigation">
-    <span class="nav__brand">MF Portfolio <span>Pro</span></span>
+    <a href="#hero" class="nav__brand">
+      <span class="nav__brand-dot"></span>
+      <span>MF Portfolio Pro</span>
+    </a>
+
     <div class="nav__links">
+      <a href="#problem" class="nav__link">Problem</a>
       <a href="#features" class="nav__link">Features</a>
       <a href="#engine" class="nav__link">Engine</a>
       <a href="#performance" class="nav__link">Results</a>
-      <a href="https://shashwat-mfportfolio.streamlit.app/" target="_blank" rel="noopener"
-        class="nav__cta" id="nav-demo">View Demo ↗</a>
+      <a href="#techstack" class="nav__link">Tech Stack</a>
+    </div>
+
+    <div class="nav__actions">
+      <a href="https://github.com/Shashwat-deb/MF_Portfolio_Analysis" target="_blank" rel="noopener" class="nav__action-link">Source Code</a>
+      <a href="https://mf-portfolio-analysis.onrender.com/" target="_blank" rel="noopener" class="btn-dark-pill" id="nav-demo">
+        <span>View Demo</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 17L17 7M7 7h10v10" />
+        </svg>
+      </a>
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
     </div>
   </nav>
 
+  <!-- Mobile Drawer Menu -->
+  <div class="nav__mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="nav__mobile-links">
+      <a href="#problem" class="nav__mobile-link">Problem</a>
+      <a href="#features" class="nav__mobile-link">Features</a>
+      <a href="#engine" class="nav__mobile-link">Engine</a>
+      <a href="#performance" class="nav__mobile-link">Results</a>
+      <a href="#techstack" class="nav__mobile-link">Tech Stack</a>
+    </div>
+    <div class="nav__mobile-actions">
+      <a href="https://github.com/Shashwat-deb/MF_Portfolio_Analysis" target="_blank" rel="noopener" class="nav__mobile-link">Source Code</a>
+      <a href="https://mf-portfolio-analysis.onrender.com/" target="_blank" rel="noopener" class="btn-dark-pill" style="justify-content: center;">
+        <span>View Demo ↗</span>
+      </a>
+    </div>
+  </div>
+
   <!-- ==============================
-       1. HERO
+       1. HERO SECTION (Bancuip Composition)
        ============================== -->
   <section class="hero" id="hero">
     <canvas id="particle-canvas" aria-hidden="true"></canvas>
-    <div class="hero__grid" aria-hidden="true"></div>
 
-    <div class="hero__inner">
-      <div class="hero__text">
-        <div class="hero__eyebrow">
-          <span class="hero__eyebrow-line"></span>
-          <span class="hero__label">Quant Research Platform</span>
-        </div>
-        <h1 class="hero__title">
-          MF Portfolio
-          <span class="hero__accent">Pro</span><span class="hero__title-sub">Optimization Engine</span>
-        </h1>
-        <p class="hero__subtitle">
-          Machine learning-driven portfolio optimization, risk analytics,
-          and probabilistic goal planning — institutional-grade tools for every investor.
-        </p>
-        <div class="hero__cta">
-          <a href="https://shashwat-mfportfolio.streamlit.app/" target="_blank" rel="noopener" class="btn"
-            id="cta-demo">
+    <div class="container">
+      <div class="hero__inner">
+        
+        <!-- Center Blue Pill CTA (Bancuip Feature Element) -->
+        <div class="hero__center-badge">
+          <a href="https://mf-portfolio-analysis.onrender.com/" target="_blank" rel="noopener" class="btn-blue-pill" id="cta-demo">
             <span>View Live Demo</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7" />
-              <path d="M7 7h10v10" />
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7M7 7h10v10" />
             </svg>
           </a>
-          <div class="hero__links">
-            <a href="https://github.com/Shashwat-deb/MF_Portfolio_Analysis" target="_blank" rel="noopener"
-              class="hero__link" id="cta-github">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </div>
+
+        <h1 class="hero__title">
+          MF Portfolio Pro<br />
+          <span class="hero__title-sub">Optimization Engine</span>
+        </h1>
+
+        <p class="hero__subtitle">
+          Machine learning-driven portfolio optimization, risk analytics, and probabilistic goal planning — institutional-grade tools for every investor.
+        </p>
+
+        <div class="hero__links">
+          <a href="https://drive.google.com/file/d/1V0LGctJTmxQrLhXReMImyWs4oA0_2ax4/view?usp=drive_link" target="_blank" rel="noopener" class="hero__link" id="cta-deck">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+            <span>Presentation</span>
+          </a>
+          <a href="https://github.com/Shashwat-deb/MF_Portfolio_Analysis" target="_blank" rel="noopener" class="hero__link" id="cta-repo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+            </svg>
+            <span>Source Code</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Hero Product Preview Card (Bancuip Style Dashboard Card) -->
+      <div class="hero__mockup-wrap">
+        <div class="product-card">
+          <div class="product-card__top">
+            <div class="product-card__search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
-              <span>Source Code</span>
-            </a>
-            <a href="https://drive.google.com/file/d/1V0LGctJTmxQrLhXReMImyWs4oA0_2ax4/view?usp=drive_link"
-              target="_blank" rel="noopener" class="hero__link" id="cta-deck">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-              </svg>
-              <span>Presentation</span>
-            </a>
+              <span>Search funds, NAV, risk metrics...</span>
+            </div>
+            <div class="product-card__tabs">
+              <button class="product-tab active" data-tab="optimal">Optimal Frontier</button>
+              <button class="product-tab" data-tab="sharpe">Max Sharpe</button>
+              <button class="product-tab" data-tab="drawdown">Min Risk</button>
+            </div>
+          </div>
+
+          <div class="product-card__grid">
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Sharpe Ratio</span>
+                <span class="metric-card__badge metric-card__badge--pos" id="badge-sharpe">+16.4% vs 1/N</span>
+              </div>
+              <div class="metric-card__value" id="val-sharpe">1.42</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Annual Volatility</span>
+                <span class="metric-card__badge metric-card__badge--neutral" id="badge-vol">Optimal Risk</span>
+              </div>
+              <div class="metric-card__value" id="val-vol">11.2%</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card__header">
+                <span class="metric-card__title">Max Drawdown</span>
+                <span class="metric-card__badge metric-card__badge--pos" id="badge-dd">230 bps lower</span>
+              </div>
+              <div class="metric-card__value" id="val-dd">-16.2%</div>
+            </div>
+          </div>
+
+          <!-- Cumulative NAV Performance Visual -->
+          <div class="product-card__chart-box">
+            <div class="chart-box__header">
+              <span class="chart-box__title">Cumulative NAV Performance vs 1/N Equal Weight</span>
+              <span class="chart-box__tag">SLSQP OPTIMIZED</span>
+            </div>
+            
+            <svg class="mockup-chart-svg" viewBox="0 0 900 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="140" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#262CC5" stop-opacity="0.12" />
+                  <stop offset="100%" stop-color="#262CC5" stop-opacity="0.0" />
+                </linearGradient>
+              </defs>
+              
+              <!-- Subtle Background Gridlines -->
+              <line x1="0" y1="20" x2="900" y2="20" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-width="1" />
+              <line x1="0" y1="65" x2="900" y2="65" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-width="1" />
+              <line x1="0" y1="110" x2="900" y2="110" stroke="#E5E7EB" stroke-dasharray="4 4" stroke-width="1" />
+
+              <!-- Equal Weight (1/N) Baseline Curve (Subtle gray dashed) -->
+              <path d="M0,120 C150,115 280,105 420,95 C550,86 700,75 900,60" fill="none" stroke="#9CA3AF" stroke-width="1.8" stroke-dasharray="5 5" />
+              
+              <!-- Optimized Portfolio Area Fill -->
+              <path d="M0,120 C140,110 260,90 400,70 C540,50 680,32 900,16 L900,140 L0,140 Z" fill="url(#chartGradient)" />
+
+              <!-- Optimized Portfolio Active Curve (Electric Blue) -->
+              <path d="M0,120 C140,110 260,90 400,70 C540,50 680,32 900,16" fill="none" stroke="#262CC5" stroke-width="2.5" stroke-linecap="round" />
+
+              <!-- Key Data Markers -->
+              <circle cx="400" cy="70" r="4" fill="#FFFFFF" stroke="#262CC5" stroke-width="2" />
+              <circle cx="900" cy="16" r="4" fill="#262CC5" stroke="#FFFFFF" stroke-width="2" />
+            </svg>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- ==============================
-       2. PROBLEM
+       2. THE PROBLEM (Challenge)
        ============================== -->
   <section class="section" id="problem">
     <div class="container">
-      <div class="section__header reveal">
-        <p class="section-label">Challenge</p>
+      <div class="section__header section__header--center">
         <h2 class="section-heading">The Problem</h2>
         <p class="section-desc">
           Retail investors lack institutional-grade tools for portfolio optimization,
           risk control, and probability-based goal estimation.
         </p>
       </div>
-      <div class="problem__grid">
-        <div class="problem__item reveal">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="12" y1="20" x2="12" y2="10" />
-            <line x1="18" y1="20" x2="18" y2="4" />
-            <line x1="6" y1="20" x2="6" y2="16" />
-          </svg>
-          <p>Over-reliance on historical returns without forward-looking risk metrics</p>
-        </div>
-        <div class="problem__item reveal">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-          </svg>
-          <p>Ignoring volatility, correlation, and tail-risk in portfolio construction</p>
-        </div>
-        <div class="problem__item reveal">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-            <polyline points="17 18 23 18 23 12" />
-          </svg>
-          <p>No structured drawdown analysis or stress-testing capabilities</p>
-        </div>
-        <div class="problem__item reveal">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          <p>No probabilistic financial planning or goal-based simulation tools</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ==============================
-       3. CORE FEATURES
-       ============================== -->
-  <section class="section section--raised" id="features">
-    <div class="container">
-      <div class="section__header reveal">
-        <p class="section-label">Capabilities</p>
-        <h2 class="section-heading">Core Features</h2>
-        <p class="section-desc">Four integrated modules for institutional-grade portfolio intelligence.</p>
-      </div>
-      <div class="features__grid">
-        <div class="feature reveal">
-          <div class="feature__icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round">
+      <div class="problem__grid">
+        <div class="problem__card">
+          <div class="problem__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="20" x2="12" y2="10" />
               <line x1="18" y1="20" x2="18" y2="4" />
               <line x1="6" y1="20" x2="6" y2="16" />
             </svg>
           </div>
-          <h3>Dashboard &amp; Risk Analytics</h3>
-          <p>Portfolio overview with Sharpe ratio, volatility tracking, and drawdown visualization.</p>
+          <h3>Historical Returns Bias</h3>
+          <p>Over-reliance on historical returns without forward-looking risk metrics creates vulnerability during market regime shifts.</p>
         </div>
-        <div class="feature reveal">
-          <div class="feature__icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <line x1="4" y1="21" x2="4" y2="14" />
-              <line x1="4" y1="10" x2="4" y2="3" />
-              <line x1="12" y1="21" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12" y2="3" />
-              <line x1="20" y1="21" x2="20" y2="16" />
-              <line x1="20" y1="12" x2="20" y2="3" />
-              <line x1="1" y1="14" x2="7" y2="14" />
-              <line x1="9" y1="8" x2="15" y2="8" />
-              <line x1="17" y1="16" x2="23" y2="16" />
-            </svg>
-          </div>
-          <h3>Portfolio Optimization</h3>
-          <p>Modern Portfolio Theory with SLSQP solver across the efficient frontier.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature__icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round">
+
+        <div class="problem__card">
+          <div class="problem__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
           </div>
-          <h3>LSTM Forecasting</h3>
-          <p>Deep learning NAV prediction using Long Short-Term Memory networks.</p>
+          <h3>Hidden Risk Blindspots</h3>
+          <p>Ignoring volatility, correlation, and tail-risk in portfolio construction leads to severe unhedged losses.</p>
         </div>
-        <div class="feature reveal">
-          <div class="feature__icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <circle cx="12" cy="12" r="6" />
-              <circle cx="12" cy="12" r="2" />
+
+        <div class="problem__card">
+          <div class="problem__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+              <polyline points="17 18 23 18 23 12" />
             </svg>
           </div>
-          <h3>Monte Carlo Goal Planner</h3>
-          <p>Probabilistic simulation for goal-based investing across thousands of scenarios.</p>
+          <h3>Absence of Stress-Testing</h3>
+          <p>No structured drawdown analysis or stress-testing capabilities leaves capital exposed to severe historical drawdowns.</p>
+        </div>
+
+        <div class="problem__card">
+          <div class="problem__card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </div>
+          <h3>Deterministic Planning</h3>
+          <p>No probabilistic financial planning or goal-based simulation tools to calculate realistic likelihoods of reaching wealth targets.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ==============================
-       4. QUANT ENGINE
+       3. CORE FEATURES (Capabilities)
+       ============================== -->
+  <section class="section section--alt" id="features">
+    <div class="container">
+      <div class="section__header section__header--center">
+        <h2 class="section-heading">Core Features</h2>
+        <p class="section-desc">Four integrated modules for institutional-grade portfolio intelligence.</p>
+      </div>
+
+      <div class="features__grid">
+        <div class="feature-card">
+          <div>
+            <div class="feature-card__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="20" x2="12" y2="10" />
+                <line x1="18" y1="20" x2="18" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="16" />
+              </svg>
+            </div>
+            <h3>Dashboard &amp; Risk Analytics</h3>
+            <p>Portfolio overview with Sharpe ratio, volatility tracking, and drawdown visualization.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div>
+            <div class="feature-card__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="21" x2="4" y2="14" />
+                <line x1="4" y1="10" x2="4" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12" y2="3" />
+                <line x1="20" y1="21" x2="20" y2="16" />
+                <line x1="20" y1="12" x2="20" y2="3" />
+                <line x1="1" y1="14" x2="7" y2="14" />
+                <line x1="9" y1="8" x2="15" y2="8" />
+                <line x1="17" y1="16" x2="23" y2="16" />
+              </svg>
+            </div>
+            <h3>Portfolio Optimization</h3>
+            <p>Modern Portfolio Theory with SLSQP solver across the efficient frontier.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div>
+            <div class="feature-card__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+            </div>
+            <h3>LSTM Forecasting</h3>
+            <p>Deep learning NAV prediction using Long Short-Term Memory networks.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div>
+            <div class="feature-card__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="6" />
+                <circle cx="12" cy="12" r="2" />
+              </svg>
+            </div>
+            <h3>Monte Carlo Goal Planner</h3>
+            <p>Probabilistic simulation for goal-based investing across thousands of scenarios.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       4. QUANT ENGINE (Technical Infrastructure)
        ============================== -->
   <section class="section" id="engine">
     <div class="container">
-      <div class="section__header reveal">
-        <p class="section-label">Technical Infrastructure</p>
+      <div class="section__header section__header--center">
         <h2 class="section-heading">Optimization &amp; Risk Engine</h2>
         <p class="section-desc">Quantitative methods powering portfolio construction and risk assessment.</p>
       </div>
+
       <div class="engine__grid">
-        <div class="engine__item reveal">
+        <div class="engine__card">
           <span class="engine__num">01</span>
           <h3>Sharpe Ratio Maximization</h3>
           <p>Constrained optimization via SLSQP for optimal risk-adjusted weight allocations.</p>
         </div>
-        <div class="engine__item reveal">
+
+        <div class="engine__card">
           <span class="engine__num">02</span>
           <h3>Efficient Frontier</h3>
           <p>Mean-variance frontier visualization of return-risk trade-offs.</p>
         </div>
-        <div class="engine__item reveal">
+
+        <div class="engine__card">
           <span class="engine__num">03</span>
           <h3>Correlation Heatmap</h3>
           <p>Pairwise NAV correlation analysis for diversification opportunities.</p>
         </div>
-        <div class="engine__item reveal">
+
+        <div class="engine__card">
           <span class="engine__num">04</span>
           <h3>VaR / CVaR</h3>
           <p>Tail-risk assessment under adverse market conditions.</p>
         </div>
-        <div class="engine__item reveal">
+
+        <div class="engine__card">
           <span class="engine__num">05</span>
           <h3>MF Score Ranking</h3>
           <p>Composite metric combining returns, volatility, drawdown, and Sharpe.</p>
@@ -247,38 +381,51 @@
   </section>
 
   <!-- ==============================
-       5. PERFORMANCE
+       5. PERFORMANCE (Empirical Evidence)
        ============================== -->
-  <section class="section section--raised" id="performance">
+  <section class="section section--alt" id="performance">
     <div class="container">
-      <div class="section__header section__header--center reveal">
-        <p class="section-label">Results</p>
+      <div class="section__header section__header--center">
         <h2 class="section-heading">Experimental Validation</h2>
-        <p class="section-desc">Quantifiable improvement over naive allocation strategies.</p>
+        <p class="section-desc">Quantifiable improvement over naive allocation strategies across historical market cycles.</p>
       </div>
+
       <div class="perf__grid">
-        <div class="perf__card reveal">
-          <p class="perf__label">Equal Weight</p>
-          <div class="perf__metric">
-            <span class="perf__name">Sharpe Ratio</span>
-            <span class="perf__value" data-target="1.22" data-decimals="2">1.22</span>
-          </div>
-          <div class="perf__metric">
-            <span class="perf__name">Max Drawdown</span>
-            <span class="perf__value perf__value--neg" data-target="-18.5" data-decimals="1"
-              data-suffix="%">-18.5%</span>
+        <!-- Baseline Strategy -->
+        <div class="perf__card">
+          <div class="perf__label">Naive Strategy (Equal Weight 1/N)</div>
+          <div class="perf__metrics">
+            <div class="perf__metric">
+              <span class="perf__name">Sharpe Ratio</span>
+              <span class="perf__value" data-target="1.22" data-decimals="2">1.22</span>
+            </div>
+            <div class="perf__metric">
+              <span class="perf__name">Annual Volatility</span>
+              <span class="perf__value" data-target="12.8" data-decimals="1" data-suffix="%">12.8%</span>
+            </div>
+            <div class="perf__metric">
+              <span class="perf__name">Max Drawdown</span>
+              <span class="perf__value" data-target="-18.5" data-decimals="1" data-suffix="%">-18.5%</span>
+            </div>
           </div>
         </div>
-        <div class="perf__card perf__card--active reveal">
-          <p class="perf__label">Optimized</p>
-          <div class="perf__metric">
-            <span class="perf__name">Sharpe Ratio</span>
-            <span class="perf__value perf__value--pos" data-target="1.42" data-decimals="2">1.42</span>
-          </div>
-          <div class="perf__metric">
-            <span class="perf__name">Max Drawdown</span>
-            <span class="perf__value perf__value--neg" data-target="-16.2" data-decimals="1"
-              data-suffix="%">-16.2%</span>
+
+        <!-- Optimized Strategy -->
+        <div class="perf__card perf__card--active">
+          <div class="perf__label">Optimized (MF Portfolio Pro)</div>
+          <div class="perf__metrics">
+            <div class="perf__metric">
+              <span class="perf__name">Sharpe Ratio</span>
+              <span class="perf__value perf__value--pos" data-target="1.42" data-decimals="2">1.42</span>
+            </div>
+            <div class="perf__metric">
+              <span class="perf__name">Annual Volatility</span>
+              <span class="perf__value" data-target="11.2" data-decimals="1" data-suffix="%">11.2%</span>
+            </div>
+            <div class="perf__metric">
+              <span class="perf__name">Max Drawdown</span>
+              <span class="perf__value perf__value--pos" data-target="-16.2" data-decimals="1" data-suffix="%">-16.2%</span>
+            </div>
           </div>
         </div>
       </div>
@@ -286,156 +433,127 @@
   </section>
 
   <!-- ==============================
-       6. TECH STACK — Marquee
+       6. TECH STACK (Architecture)
        ============================== -->
   <section class="section" id="techstack">
     <div class="container">
-      <div class="section__header section__header--center reveal">
-        <p class="section-label">Built With</p>
+      <div class="section__header section__header--center">
         <h2 class="section-heading">Tech Stack</h2>
+        <p class="section-desc">Python quantitative stack powering data processing, optimization solvers, and deep learning.</p>
       </div>
-    </div>
 
-    <div class="stack__wrapper" aria-label="Technology stack">
-      <div class="stack__track" aria-hidden="true">
-        <!-- Set 1 -->
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-          <span>Streamlit</span>
+      <div class="stack__grid">
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 22 22 22" />
+            </svg>
+          </div>
+          <div class="stack__card-name">Streamlit</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7z" />
-          </svg>
-          <span>NumPy</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <line x1="9" y1="3" x2="9" y2="21" />
+            </svg>
+          </div>
+          <div class="stack__card-name">NumPy</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-          </svg>
-          <span>SciPy</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+          </div>
+          <div class="stack__card-name">SciPy</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-            <path d="M2 12h20" />
-            <path d="M12 2a15 15 0 014 10 15 15 0 01-4 10 15 15 0 01-4-10A15 15 0 0112 2z" />
-          </svg>
-          <span>Pandas</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+            </svg>
+          </div>
+          <div class="stack__card-name">Pandas</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-          <span>TensorFlow</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="stack__card-name">TensorFlow</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18" />
-            <path d="M7 16l4-8 4 4 5-9" />
-          </svg>
-          <span>Plotly</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          </div>
+          <div class="stack__card-name">Plotly</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32" />
-          </svg>
-          <span>Python</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72" />
+            </svg>
+          </div>
+          <div class="stack__card-name">Python</div>
         </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-          </svg>
-          <span>Keras</span>
-        </div>
-        <!-- Set 2 — duplicate for seamless loop -->
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-          <span>Streamlit</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7z" />
-          </svg>
-          <span>NumPy</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-          </svg>
-          <span>SciPy</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" />
-            <path d="M2 12h20" />
-            <path d="M12 2a15 15 0 014 10 15 15 0 01-4 10 15 15 0 01-4-10A15 15 0 0112 2z" />
-          </svg>
-          <span>Pandas</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-          <span>TensorFlow</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18" />
-            <path d="M7 16l4-8 4 4 5-9" />
-          </svg>
-          <span>Plotly</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32" />
-          </svg>
-          <span>Python</span>
-        </div>
-        <div class="stack__item">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-          </svg>
-          <span>Keras</span>
+
+        <div class="stack__card">
+          <div class="stack__card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+            </svg>
+          </div>
+          <div class="stack__card-name">Keras</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ==============================
-       7. FOOTER
+       7. FINAL CTA BANNER
+       ============================== -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Experience Institutional Portfolio Intelligence</h2>
+        <p>
+          Optimize your mutual fund allocations with machine learning, mathematical constraints, and risk-first analytics.
+        </p>
+        <div class="cta-banner__actions">
+          <a href="https://mf-portfolio-analysis.onrender.com/" target="_blank" rel="noopener" class="btn-white-pill">
+            <span>Launch Live Demo</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
+          </a>
+          <a href="https://github.com/Shashwat-deb/MF_Portfolio_Analysis" target="_blank" rel="noopener" class="btn-outline-pill">
+            <span>View Source Code</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       8. FOOTER
        ============================== -->
   <footer class="footer" id="footer">
     <div class="container">
@@ -446,8 +564,7 @@
           <span class="footer__mentor">Mentored by Dr. Aditya Sinha</span>
         </div>
         <a href="#hero" class="footer__back" aria-label="Back to top">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 19V5M5 12l7-7 7 7" />
           </svg>
           Back to top
@@ -457,26 +574,89 @@
   </footer>
 
   <!-- ==============================
-       JS
+       JAVASCRIPT
        ============================== -->
   <script src="particles.js"></script>
   <script>
     /* =============================================
-       SCROLL REVEAL
+       MOBILE DRAWER TOGGLE
        ============================================= */
-    const reveals = document.querySelectorAll('.reveal');
-    const revealObs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObs.unobserve(entry.target);
-        }
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+
+    if (mobileToggle && mobileDrawer) {
+      mobileToggle.addEventListener('click', () => {
+        const isOpen = mobileDrawer.classList.toggle('active');
+        mobileToggle.classList.toggle('active');
+        mobileToggle.setAttribute('aria-expanded', isOpen);
       });
-    }, { threshold: 0.07, rootMargin: '0px 0px -60px 0px' });
-    reveals.forEach(el => revealObs.observe(el));
+
+      document.querySelectorAll('.nav__mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileDrawer.classList.remove('active');
+          mobileToggle.classList.remove('active');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
 
     /* =============================================
-       COUNT-UP ANIMATION
+       HERO PRODUCT CARD TAB INTERACTIVITY
+       ============================================= */
+    const tabs = document.querySelectorAll('.product-tab');
+    const valSharpe = document.getElementById('val-sharpe');
+    const badgeSharpe = document.getElementById('badge-sharpe');
+    const valVol = document.getElementById('val-vol');
+    const badgeVol = document.getElementById('badge-vol');
+    const valDd = document.getElementById('val-dd');
+    const badgeDd = document.getElementById('badge-dd');
+
+    const tabData = {
+      optimal: {
+        sharpe: '1.42',
+        sharpeBadge: '+16.4% vs 1/N',
+        vol: '11.2%',
+        volBadge: 'Optimal Risk',
+        dd: '-16.2%',
+        ddBadge: '230 bps lower'
+      },
+      sharpe: {
+        sharpe: '1.58',
+        sharpeBadge: 'Maximum Sharpe',
+        vol: '12.9%',
+        volBadge: 'Moderate Vol',
+        dd: '-17.4%',
+        ddBadge: '110 bps lower'
+      },
+      drawdown: {
+        sharpe: '1.31',
+        sharpeBadge: '+7.4% vs 1/N',
+        vol: '9.8%',
+        volBadge: 'Lowest Vol',
+        dd: '-13.8%',
+        ddBadge: '470 bps lower'
+      }
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const key = tab.dataset.tab;
+        if (tabData[key]) {
+          valSharpe.textContent = tabData[key].sharpe;
+          badgeSharpe.textContent = tabData[key].sharpeBadge;
+          valVol.textContent = tabData[key].vol;
+          badgeVol.textContent = tabData[key].volBadge;
+          valDd.textContent = tabData[key].dd;
+          badgeDd.textContent = tabData[key].ddBadge;
+        }
+      });
+    });
+
+    /* =============================================
+       COUNT-UP ANIMATION FOR VALIDATION METRICS
        ============================================= */
     const countObs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -488,8 +668,9 @@
           const neg = t < 0;
           const a = Math.abs(t);
           const start = performance.now();
+          
           function tick(now) {
-            const p = Math.min((now - start) / 1200, 1);
+            const p = Math.min((now - start) / 1000, 1);
             const e = 1 - Math.pow(1 - p, 3);
             el.textContent = (neg ? '-' : '') + (e * a).toFixed(d) + s;
             if (p < 1) requestAnimationFrame(tick);
@@ -498,111 +679,10 @@
           countObs.unobserve(el);
         }
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.4 });
+
     document.querySelectorAll('.perf__value[data-target]').forEach(el => countObs.observe(el));
-
-    /* =============================================
-       NAV SCROLL SHADOW
-       ============================================= */
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.style.borderBottomColor = window.scrollY > 10
-        ? 'rgba(255,255,255,0.08)'
-        : 'rgba(255,255,255,0.042)';
-    }, { passive: true });
-
-    /* =============================================
-       CUSTOM CURSOR (desktop only)
-       ============================================= */
-    (function() {
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      if (isMobile) return;
-
-      const dot  = document.getElementById('cursor-dot');
-      const ring = document.getElementById('cursor-ring');
-      const glow = document.getElementById('cursor-glow');
-
-      let mx = -200, my = -200;   // raw mouse
-      let rx = -200, ry = -200;   // ring (lerped)
-      let gx = -200, gy = -200;   // glow (slower lerp)
-
-      const RING_LERP = 0.13;
-      const GLOW_LERP = 0.06;
-
-      document.addEventListener('mousemove', (e) => {
-        mx = e.clientX;
-        my = e.clientY;
-      }, { passive: true });
-
-      document.addEventListener('mouseleave', () => {
-        dot.style.opacity  = '0';
-        ring.style.opacity = '0';
-        glow.style.opacity = '0';
-      });
-
-      document.addEventListener('mouseenter', () => {
-        dot.style.opacity  = '1';
-        ring.style.opacity = '1';
-        glow.style.opacity = '1';
-      });
-
-      function lerp(a, b, t) { return a + (b - a) * t; }
-
-      function animateCursor() {
-        // Dot snaps instantly
-        dot.style.left = mx + 'px';
-        dot.style.top  = my + 'px';
-
-        // Ring lerps
-        rx = lerp(rx, mx, RING_LERP);
-        ry = lerp(ry, my, RING_LERP);
-        ring.style.left = rx + 'px';
-        ring.style.top  = ry + 'px';
-
-        // Glow lerps slower
-        gx = lerp(gx, mx, GLOW_LERP);
-        gy = lerp(gy, my, GLOW_LERP);
-        glow.style.left = gx + 'px';
-        glow.style.top  = gy + 'px';
-
-        requestAnimationFrame(animateCursor);
-      }
-      requestAnimationFrame(animateCursor);
-
-      // Scale ring on interactive elements
-      const interactiveEls = document.querySelectorAll('a, button, .feature, .perf__card, .stack__item');
-      interactiveEls.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
-          ring.style.borderColor = 'rgba(126,171,148,0.65)';
-          dot.style.transform = 'translate(-50%,-50%) scale(0.5)';
-        });
-        el.addEventListener('mouseleave', () => {
-          ring.style.transform = 'translate(-50%,-50%) scale(1)';
-          ring.style.borderColor = 'rgba(126,171,148,0.38)';
-          dot.style.transform = 'translate(-50%,-50%) scale(1)';
-        });
-      });
-    })();
-
-    /* =============================================
-       TILT EFFECT ON FEATURE CARDS
-       ============================================= */
-    document.querySelectorAll('.feature, .perf__card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width  - 0.5;  // -0.5 to 0.5
-        const y = (e.clientY - rect.top)  / rect.height - 0.5;
-        card.style.transform = `translateY(-3px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 5).toFixed(2)}deg)`;
-        card.style.transition = 'transform 0.1s ease';
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease';
-      });
-    });
   </script>
-
 </body>
 
 </html>
